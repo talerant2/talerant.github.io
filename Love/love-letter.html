@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Любовное послание - Талерант и Аня">
+    <meta name="theme-color" content="#ff6b9d">
+    <title>Любовное послание ❤ Талерант и Лера</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff6b9d;
+            --secondary-pink: #ff8fab;
+            --accent-purple: #c44569;
+            --glass-white: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.25);
+            --glass-shadow: rgba(0, 0, 0, 0.1);
+            --text-white: #ffffff;
+            --text-light: rgba(255, 255, 255, 0.9);
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --gradient-primary: linear-gradient(135deg, #ff6b9d, #c44569);
+            --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: var(--text-white);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Видео фон */
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.3;
+        }
+
+        /* Слой затемнения */
+        .video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(0, 0, 0, 0.95));
+            z-index: -1;
+        }
+        
+        /* Анимированные частицы */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+            opacity: 0.4;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        /* Кнопка возврата */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            z-index: 1000;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 8px 25px rgba(255, 107, 157, 0.3),
+                0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 15px 35px rgba(255, 107, 157, 0.4),
+                0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button::before {
+            content: '←';
+            font-size: 1.2rem;
+        }
+        
+        /* Основной контейнер */
+        .main-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        /* Стеклянная карточка */
+        .glass-card {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                rgba(255, 255, 255, 0.05) 50%, 
+                rgba(255, 255, 255, 0.02) 100%);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.15),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+            padding: 3rem;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                var(--primary-pink) 50%, 
+                transparent 100%);
+            opacity: 0.8;
+        }
+
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.1) 0%, 
+                transparent 50%, 
+                rgba(255, 255, 255, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 8px 16px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.25),
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                0 0 30px rgba(255, 107, 157, 0.2);
+            border-color: rgba(255, 107, 157, 0.4);
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Заголовок */
+        .hero-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            position: relative;
+        }
+        
+        .main-title::after {
+            content: '💕';
+            position: absolute;
+            font-size: 0.8em;
+            animation: heartbeat 2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        /* Любовное послание */
+        .love-letter {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            line-height: 2;
+            color: var(--text-light);
+            text-align: justify;
+            margin: 2rem 0;
+        }
+
+        .love-letter p {
+            margin-bottom: 1.5rem;
+            text-indent: 2rem;
+        }
+
+        .love-letter .highlight {
+            color: var(--primary-pink);
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+        }
+
+        .love-letter .signature {
+            text-align: right;
+            font-size: 1.6rem;
+            margin-top: 3rem;
+            color: var(--primary-pink);
+            font-weight: 600;
+        }
+
+        /* Анимированные элементы */
+        .floating-hearts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: floatHeart 15s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+                gap: 2rem;
+            }
+            
+            .glass-card {
+                padding: 2rem;
+                border-radius: 20px;
+            }
+            
+            .love-letter {
+                font-size: 1.2rem;
+                line-height: 1.8;
+            }
+            
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Видео фон -->
+    <video class="background-video" autoplay muted loop>
+        <source src="videos/video.mp4" type="video/mp4">
+    </video>
+    
+    <!-- Слой затемнения -->
+    <div class="video-overlay"></div>
+    
+    <!-- Анимированные частицы -->
+    <div id="particles" class="particles"></div>
+    
+    <!-- Кнопка возврата -->
+    <button class="back-button" onclick="window.location.href='index.html'">
+        На главную
+    </button>
+
+    <!-- Основной контент -->
+    <div class="main-container">
+        <div class="glass-card">
+            <div class="hero-section">
+                <h1 class="main-title">Любовное послание</h1>
+                <p class="subtitle">От всего сердца, с бесконечной любовью</p>
+            </div>
+            
+            <div class="love-letter">
+                <p>
+                    Моя дорогая <span class="highlight">Лера</span>, каждый день, когда я просыпаюсь, первая мысль, которая приходит мне в голову - это ты. Твоя улыбка освещает мой мир, твой голос наполняет мое сердце теплом, а твоя любовь делает меня самым счастливым человеком на свете.
+                </p>
+                
+                <p>
+                    Помнишь нашу первую встречу? Я сразу понял, что ты особенная. Твои глаза говорили о доброте и мудрости, а твоя душа излучала свет, который покорил мое сердце навсегда. С тех пор каждый день с тобой - это подарок судьбы, за который я бесконечно благодарен.
+                </p>
+                
+                <p>
+                    Ты научила меня видеть красоту в простых вещах, ценить каждый момент и любить всем сердцем. С тобой я чувствую себя защищенным, понятым и бесконечно любимым. Ты - мой лучший друг, мой советчик, мой вдохновитель и моя любовь.
+                </p>
+                
+                <p>
+                    Вместе мы создали столько прекрасных воспоминаний, и я знаю, что впереди нас ждет еще больше счастливых моментов. Твоя любовь делает меня сильнее, твоя поддержка помогает мне расти, а твоя вера в меня вдохновляет на великие дела.
+                </p>
+                
+                <p>
+                    Я обещаю любить тебя каждый день, заботиться о тебе, поддерживать тебя во всех начинаниях и быть рядом в радости и в горе. Ты - самое дорогое, что у меня есть, и я буду беречь нашу любовь как самый драгоценный дар.
+                </p>
+                
+                <p>
+                    Спасибо тебе за то, что ты есть, за твою любовь, за твою доброту, за твою мудрость. Ты делаешь мой мир прекрасным, а мою жизнь - полной смысла и радости.
+                </p>
+                
+                <p>
+                    Я люблю тебя больше, чем вчера, но меньше, чем завтра. Моя любовь к тебе растет с каждым днем, с каждым взглядом, с каждым прикосновением. Ты - мое вдохновение, моя муза, моя любовь.
+                </p>
+                
+                <p class="signature">
+                    С бесконечной любовью,<br>
+                    <span class="highlight">Талерант</span> ❤
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Создание частиц
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 25 + 's';
+                particle.style.animationDuration = 20 + Math.random() * 10 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Создание плавающих сердечек
+        function createFloatingHearts() {
+            const container = document.querySelector('.glass-card');
+            const heartCount = 15;
+
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = '💕';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.animationDuration = 12 + Math.random() * 8 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        // Инициализация
+        function init() {
+            createParticles();
+            createFloatingHearts();
+        }
+        
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html> 
